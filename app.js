@@ -19,6 +19,12 @@ app.set('views', path.join(__dirname, 'views'));
 // Multer Setup for File Upload
 const upload = multer({ dest: 'uploads/' });
 
+// Maksimum dosya boyutu: 5 MB
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+
+// Desteklenen dosya formatı
+const ALLOWED_FILE_TYPES = ['text/csv'];
+
 // Function to Parse CSV Files
 const parseCSV = (filePath) => {
     return new Promise((resolve, reject) => {
@@ -47,13 +53,23 @@ app.post('/upload', upload.fields([{ name: 'following' }, { name: 'followers' }]
         return res.render('index', { message: 'Lütfen her iki dosyayı da yükleyin!', nonFollowers: null });
     }
 
+    const followingFile = req.files.following[0];
+    const followersFile = req.files.followers[0];
+
+    // Dosya boyutu kontrolü
+    if (followingFile.size > MAX_FILE_SIZE || followersFile.size > MAX_FILE_SIZE) {
+        return res.render('index', { message: 'Dosya boyutu 5 MB’yi geçemez!', nonFollowers: null });
+    }
+
+    // Dosya formatı kontrolü
+    if (!ALLOWED_FILE_TYPES.includes(followingFile.mimetype) || !ALLOWED_FILE_TYPES.includes(followersFile.mimetype)) {
+        return res.render('index', { message: 'Yalnızca CSV dosyalarını yükleyebilirsiniz!', nonFollowers: null });
+    }
+
     try {
         // Parse the uploaded files
-        const followingFile = req.files.following[0].path;
-        const followersFile = req.files.followers[0].path;
-
-        const followingData = await parseCSV(followingFile);
-        const followersData = await parseCSV(followersFile);
+        const followingData = await parseCSV(followingFile.path);
+        const followersData = await parseCSV(followersFile.path);
 
         // Extract usernames
         const followingList = followingData.map((row) => row['Username']);
@@ -61,6 +77,10 @@ app.post('/upload', upload.fields([{ name: 'following' }, { name: 'followers' }]
 
         // Find non-followers
         const nonFollowers = followingList.filter((user) => !followersList.includes(user));
+
+        // Yüklenen dosyaları temizle
+        fs.unlinkSync(followingFile.path);
+        fs.unlinkSync(followersFile.path);
 
         // Render results
         res.render('index', { message: null, nonFollowers });

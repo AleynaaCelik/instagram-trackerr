@@ -1,35 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instagram Takipçi Analizi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1 {
+            color: #444;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 20px auto;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        input[type="file"] {
+            margin: 10px 0;
+            padding: 5px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .message {
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .message.error {
+            color: red;
+        }
+        .message.success {
+            color: green;
+        }
+        ul {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 20px auto;
+            list-style: none;
+        }
+        ul li {
+            margin: 5px 0;
+        }
+        ul li a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        ul li a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
     <h1>Instagram Takipçi Analizi</h1>
     <form action="/upload" method="POST" enctype="multipart/form-data">
         <label for="following">Following Dosyası:</label>
-        <input type="file" name="following" required><br><br>
+        <input type="file" name="following" required>
 
         <label for="followers">Followers Dosyası:</label>
-        <input type="file" name="followers" required><br><br>
+        <input type="file" name="followers" required>
 
         <button type="submit">Karşılaştır</button>
     </form>
 
     <% if (message) { %>
-        <p style="color: red;"><%= message %></p>
+        <p class="message <%= nonFollowers ? 'error' : 'success' %>"><%= message %></p>
     <% } %>
 
     <% if (nonFollowers && nonFollowers.length > 0) { %>
         <h2>Takip Etmeyenler:</h2>
+        <p><strong><%= nonFollowers.length %> kişi sizi takip etmiyor.</strong></p>
         <ul>
             <% nonFollowers.forEach((user) => { %>
                 <li><a href="https://www.instagram.com/<%= user %>" target="_blank"><%= user %></a></li>
             <% }); %>
         </ul>
     <% } else if (nonFollowers && nonFollowers.length === 0) { %>
-        <p>Tüm takip ettikleriniz sizi takip ediyor!</p>
+        <p class="message success">Harika! Tüm takip ettikleriniz sizi takip ediyor.</p>
     <% } %>
 </body>
 </html>
