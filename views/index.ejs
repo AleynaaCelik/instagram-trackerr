@@ -1,36 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instagram Takipçi Analizi</title>
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-    <h1>Instagram Takipçi Analizi</h1>
-    <form action="/upload" method="POST" enctype="multipart/form-data">
-        <label for="following">Following Dosyası:</label>
-        <input type="file" name="following" required><br><br>
+    <div class="container">
+        <h1>Instagram Takipçi Analizi</h1>
+        <form action="/compare" method="POST" enctype="multipart/form-data">
+            <label for="following">Following Dosyası:</label>
+            <input type="file" id="following" name="following">
 
-        <label for="followers">Followers Dosyası:</label>
-        <input type="file" name="followers" required><br><br>
+            <label for="followers">Followers Dosyası:</label>
+            <input type="file" id="followers" name="followers">
 
-        <button type="submit">Karşılaştır</button>
-    </form>
+            <button type="submit">Karşılaştır</button>
+        </form>
+    </div>
 
-    <% if (message) { %>
-        <p style="color: red;"><%= message %></p>
-    <% } %>
-
-    <% if (nonFollowers && nonFollowers.length > 0) { %>
-        <h2>Takip Etmeyenler:</h2>
-        <ul>
-            <% nonFollowers.forEach((user) => { %>
-                <li><a href="https://www.instagram.com/<%= user %>" target="_blank"><%= user %></a></li>
-            <% }); %>
-        </ul>
-    <% } else if (nonFollowers && nonFollowers.length === 0) { %>
-        <p>Tüm takip ettikleriniz sizi takip ediyor!</p>
-    <% } %>
+    <footer>© 2025 Instagram Tracker</footer>
 </body>
 </html>

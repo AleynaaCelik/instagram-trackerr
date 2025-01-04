@@ -1,48 +1,60 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    line-height: 1.6;
+    background-image: url('/image.png'); /* Yüklediğim dosyanın yolu */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.9); /* Opak beyaz arka plan */
+    border-radius: 10px;
+    padding: 20px;
+    width: 350px;
+    margin: 50px auto;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
 }
 
 h1 {
     color: #333;
-}
-
-form {
+    font-size: 24px;
     margin-bottom: 20px;
+    font-weight: bold;
 }
 
-input[type="file"], button {
+label {
+    display: block;
     margin: 10px 0;
-    padding: 10px;
-    font-size: 1rem;
+    font-weight: bold;
+}
+
+input[type="file"] {
+    margin: 10px 0;
+    padding: 5px;
 }
 
 button {
     background-color: #007bff;
     color: white;
     border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
     cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 button:hover {
     background-color: #0056b3;
 }
 
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-li {
-    margin: 5px 0;
-}
-
-li a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-li a:hover {
-    text-decoration: underline;
+footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #666;
 }
