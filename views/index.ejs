@@ -20,5 +20,16 @@
     <% if (message) { %>
         <p style="color: red;"><%= message %></p>
     <% } %>
+
+    <% if (nonFollowers && nonFollowers.length > 0) { %>
+        <h2>Takip Etmeyenler:</h2>
+        <ul>
+            <% nonFollowers.forEach((user) => { %>
+                <li><a href="https://www.instagram.com/<%= user %>" target="_blank"><%= user %></a></li>
+            <% }); %>
+        </ul>
+    <% } else if (nonFollowers && nonFollowers.length === 0) { %>
+        <p>Tüm takip ettikleriniz sizi takip ediyor!</p>
+    <% } %>
 </body>
 </html>
