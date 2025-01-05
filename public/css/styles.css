@@ -1,0 +1,10 @@
+body {
+    background-image: url('/images/image.png'); /* Yüklediğin dosyanın yolu */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
