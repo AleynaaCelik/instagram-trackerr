@@ -46,54 +46,41 @@ app.get('/', (req, res) => {
     });
 });
 
-app.post(
-    '/upload',
-    upload.fields([{ name: 'following' }, { name: 'followers' }]),
-    async (req, res) => {
-        if (!req.files || !req.files.following || !req.files.followers) {
-            return res.render('index', {
-                message: 'Lütfen her iki dosyayı da yükleyin!',
-                nonFollowers: null,
-                notFollowingBack: null,
-            });
-        }
-
-        try {
-            // Parse the uploaded files
-            const followingFile = req.files.following[0].path;
-            const followersFile = req.files.followers[0].path;
-
-            const followingData = await parseCSV(followingFile);
-            const followersData = await parseCSV(followersFile);
-
-            // Extract usernames
-            const followingList = followingData.map((row) => row['Username']);
-            const followersList = followersData.map((row) => row['Username']);
-
-            // Find non-followers and not-following-back
-            const nonFollowers = followingList.filter(
-                (user) => !followersList.includes(user)
-            );
-            const notFollowingBack = followersList.filter(
-                (user) => !followingList.includes(user)
-            );
-
-            // Render results
-            res.render('index', {
-                message: null,
-                nonFollowers,
-                notFollowingBack,
-            });
-        } catch (error) {
-            console.error('Error processing files:', error);
-            res.render('index', {
-                message: 'Bir hata oluştu. Lütfen tekrar deneyin.',
-                nonFollowers: null,
-                notFollowingBack: null,
-            });
-        }
+app.post('/upload', upload.fields([{ name: 'following' }, { name: 'followers' }]), async (req, res) => {
+    if (!req.files || !req.files.following || !req.files.followers) {
+        return res.render('index', {
+            message: { type: 'error', text: 'Lütfen her iki dosyayı da yükleyin!' },
+            nonFollowers: null
+        });
     }
-);
+
+    try {
+        // Dosyaları işle
+        const followingFile = req.files.following[0].path;
+        const followersFile = req.files.followers[0].path;
+
+        const followingData = await parseCSV(followingFile);
+        const followersData = await parseCSV(followersFile);
+
+        // Kullanıcıları analiz et
+        const followingList = followingData.map((row) => row['Username']);
+        const followersList = followersData.map((row) => row['Username']);
+        const nonFollowers = followingList.filter((user) => !followersList.includes(user));
+
+        res.render('index', {
+            message: { type: 'success', text: 'Analiz başarılı! Takip etmeyen kullanıcılar listelendi.' },
+            nonFollowers
+        });
+    } catch (error) {
+        console.error('Error processing files:', error);
+        res.render('index', {
+            message: { type: 'error', text: 'Bir hata oluştu. Lütfen tekrar deneyin.' },
+            nonFollowers: null
+        });
+    }
+});
+
+
 
 // Server Listener
 app.listen(PORT, () => {
